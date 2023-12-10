@@ -86,7 +86,8 @@ class SportsWalking(Training):
     """Тренировка: спортивная ходьба."""
     COEF_WEIGHT_1: float = 0.035
     COEF_WEIGHT_2: float = 0.029
-    AVERAGE_SPEED: float = 1000 / 3600
+    AVERAGE_SPEED: float = 0.278
+    SM_IN_M: int = 100
 
     def __init__(self,
                  action: int,
@@ -100,10 +101,11 @@ class SportsWalking(Training):
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий при хотьбе."""
         average_speed_in_minutes = self.get_mean_speed() * self.AVERAGE_SPEED
-        height_m = self.height / 100
-        return ((self.COEF_WEIGHT_1 * self.duration
+        height_m = self.height / self.SM_IN_M
+        return ((self.COEF_WEIGHT_1 * self.weight
                 + (average_speed_in_minutes**2 / height_m)
-                * self.COEF_WEIGHT_2) * self.duration * self.M_IN_H)
+                * self.COEF_WEIGHT_2 * self.weight)
+                * self.duration * self.M_IN_H)
 
 
 class Swimming(Training):
